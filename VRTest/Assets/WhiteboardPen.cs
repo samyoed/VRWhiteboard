@@ -6,9 +6,15 @@ public class WhiteboardPen : MonoBehaviour
 {
     public Color color;
 	public Whiteboard whiteboard;
+	public Whiteboard whiteboard2;
+	public Transform penMarker;
+	public Transform penMarker2;
+
 	private RaycastHit touch;
 	public Quaternion lockedAngle;
 	private Quaternion lastAngle;
+
+	int activeBoard = 0;
 
 	private MeshRenderer rend;
 	
@@ -29,6 +35,15 @@ public class WhiteboardPen : MonoBehaviour
     {
 		// Get our Whiteboard component from the whiteboard object
 		whiteboard = GameObject.Find("Whiteboard").GetComponent<Whiteboard>();
+
+
+		//disabling whiteboard2
+		whiteboard2 = GameObject.Find("Whiteboard2").GetComponent<Whiteboard>();
+		whiteboard2.GetComponent<MeshRenderer>().enabled = false;
+		whiteboard2.GetComponent<MeshCollider>().enabled = false;
+		whiteboard2.enabled = false;
+
+		penMarker = whiteboard.transform.GetChild(0);
 		rend = transform.GetComponent<MeshRenderer>();
 		startPos = transform.position;
 		startRot = transform.rotation;
@@ -38,11 +53,15 @@ public class WhiteboardPen : MonoBehaviour
 	void Update () 
     {
         tipObj = transform.GetChild(0);
+		penMarker = whiteboard.transform.GetChild(0);
 
 		// float tipHeight = transform.Find ("Tip").transform.localScale.y;
 		// Vector3 tip = transform.Find ("Tip").transform.position;
         
         float tipHeight = tipObj.localScale.y / 4;
+
+		//for hover drawing
+		float hoverDist = tipObj.localScale.y / 2;
 		Vector3 tip = tipObj.position;
 
         tipObj.gameObject.GetComponent<MeshRenderer>().material.color = color;
@@ -50,6 +69,19 @@ public class WhiteboardPen : MonoBehaviour
 		if (lastTouch) 
         {
 			tipHeight *= 1.1f;
+		}
+
+		if(Physics.Raycast (tip, transform.up, out touch, hoverDist))
+		{
+			if(touch.collider.tag == "Whiteboard")
+			{
+				penMarker.gameObject.SetActive(true);
+				penMarker.position = new Vector3 (penMarker.position.x, transform.position.y, transform.position.z);
+			}
+		}
+		else
+		{
+			penMarker.gameObject.SetActive(false);
 		}
 
 		// Check for a Raycast from the tip of the pen
@@ -74,7 +106,6 @@ public class WhiteboardPen : MonoBehaviour
 			    }
             }
 			
-
 			//marker-object interactions
 			switch(touch.collider.tag)
 			{
@@ -89,29 +120,30 @@ public class WhiteboardPen : MonoBehaviour
 					whiteboard.GetComponent<Whiteboard>().texture.SetPixels(0, 0, whiteboard.textureSizeX, whiteboard.textureSizeY, 
 																		whiteboard.GetComponent<Whiteboard>().color);
 				break;
-
 				case "Save":
 					SaveTextureAsPNG(whiteboard.GetComponent<Whiteboard>().texture, "Assets/test.png");
 				break;
+				case "Switch":
+					Whiteboard temp = whiteboard;
+					whiteboard = whiteboard2;
+					whiteboard2 = temp;
+
+					penMarker = whiteboard.transform.GetChild(0);
+					whiteboard2.gameObject.GetComponent<MeshRenderer>().enabled = false;
+					whiteboard.gameObject.GetComponent<MeshRenderer>().enabled = true;
+					
+					whiteboard.GetComponent<MeshCollider>().enabled = true;
+					whiteboard.enabled = true;
+					whiteboard2.GetComponent<MeshCollider>().enabled = false;
+					whiteboard2.enabled = false;
+					
+				break;
 			}
-			// //for colorpicking
-            // if(touch.collider.tag == "ColorPick")
-            // {
-            //     color = touch.collider.gameObject.GetComponent<MeshRenderer>().material.color;
-            // }
-			// //for board reset
-			// if(touch.collider.tag == "BoardReset")
-			// {
-			// 	Texture2D texture = new Texture2D(whiteboard.textureSize, whiteboard.textureSize);
-			// 	whiteboard.GetComponent<Whiteboard>().SetColor(Color.white);
-			// 	whiteboard.GetComponent<Whiteboard>().texture.SetPixels(0, 0, whiteboard.textureSize, whiteboard.textureSize, 
-			// 															whiteboard.GetComponent<Whiteboard>().color);
-			// }
 		} 
         else 
         {
-			
-			rend.material.color = Color.white;
+
+			//rend.material.color = Color.white;
 			whiteboard.ToggleTouch (false);
 			lastTouch = false;
 		}
@@ -119,8 +151,7 @@ public class WhiteboardPen : MonoBehaviour
 		// Lock the rotation of the pen if "touching"
 		if (lastTouch) 
         {
-			
-			transform.rotation = lockedAngle;
+			transform.rotation = lastAngle;
 
 			//trying to snap the marker to the board. Won't work
 			//Vector3 lockedPos = new Vector3(Mathf.Clamp(transform.position.x, 0, 0), transform.position.y, transform.position.z);

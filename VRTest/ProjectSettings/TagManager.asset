@@ -9,6 +9,7 @@ TagManager:
   - BoardReset
   - Ground
   - Save
+  - Switch
   layers:
   - Default
   - TransparentFX
