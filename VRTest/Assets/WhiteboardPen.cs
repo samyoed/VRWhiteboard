@@ -114,28 +114,13 @@ public class WhiteboardPen : MonoBehaviour
 				break;
 
 				case "BoardReset":
-					Texture2D texture = new Texture2D(whiteboard.textureSizeX, whiteboard.textureSizeY);
-					whiteboard.GetComponent<Whiteboard>().SetColor(Color.white);
-					print(whiteboard.GetComponent<Whiteboard>().color.Length);
-					whiteboard.GetComponent<Whiteboard>().texture.SetPixels(0, 0, whiteboard.textureSizeX, whiteboard.textureSizeY, 
-																		whiteboard.GetComponent<Whiteboard>().color);
+					ResetBoard();
 				break;
 				case "Save":
-					SaveTextureAsPNG(whiteboard.GetComponent<Whiteboard>().texture, "Assets/test.png");
+					whiteboard.SaveBoard();
 				break;
 				case "Switch":
-					Whiteboard temp = whiteboard;
-					whiteboard = whiteboard2;
-					whiteboard2 = temp;
-
-					penMarker = whiteboard.transform.GetChild(0);
-					whiteboard2.gameObject.GetComponent<MeshRenderer>().enabled = false;
-					whiteboard.gameObject.GetComponent<MeshRenderer>().enabled = true;
-					
-					whiteboard.GetComponent<MeshCollider>().enabled = true;
-					whiteboard.enabled = true;
-					whiteboard2.GetComponent<MeshCollider>().enabled = false;
-					whiteboard2.enabled = false;
+					SwitchBoard();
 					
 				break;
 			}
@@ -158,7 +143,6 @@ public class WhiteboardPen : MonoBehaviour
 			//transform.position = lockedPos
 		}
 
-
 		//will return marker back to start position/rotation after set time
 		if(groundTimerStart)
 		{
@@ -169,16 +153,30 @@ public class WhiteboardPen : MonoBehaviour
 				transform.rotation = startRot;
 			}
 		}
-
-
     }
 
-	void SaveTextureAsPNG(Texture2D _texture, string _fullPath)
-         {
-             byte[] _bytes =_texture.EncodeToPNG();
-             System.IO.File.WriteAllBytes(_fullPath, _bytes);
-             Debug.Log(_bytes.Length/1024  + "Kb was saved as: " + _fullPath);
-         }
+	public void ResetBoard()
+	{
+		Texture2D texture = new Texture2D(whiteboard.textureSizeX, whiteboard.textureSizeY);
+		whiteboard.GetComponent<Whiteboard>().SetColor(Color.white);
+		print(whiteboard.GetComponent<Whiteboard>().color.Length);
+		whiteboard.GetComponent<Whiteboard>().texture.SetPixels(0, 0, whiteboard.textureSizeX, whiteboard.textureSizeY, 
+																		whiteboard.GetComponent<Whiteboard>().color);
+	}
+
+	public void SwitchBoard()
+	{
+		Whiteboard temp = whiteboard;
+		whiteboard = whiteboard2;
+		whiteboard2 = temp;
+		penMarker = whiteboard.transform.GetChild(0);
+		whiteboard2.gameObject.GetComponent<MeshRenderer>().enabled = false;
+		whiteboard.gameObject.GetComponent<MeshRenderer>().enabled = true;
+		whiteboard.GetComponent<MeshCollider>().enabled = true;
+		whiteboard.enabled = true;
+		whiteboard2.GetComponent<MeshCollider>().enabled = false;
+		whiteboard2.enabled = false;
+	}
 
 	//for checking if the marker hit the ground --- 
 	void OnCollisionEnter(Collision coll)

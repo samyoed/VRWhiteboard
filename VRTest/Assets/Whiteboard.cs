@@ -18,6 +18,8 @@ public class Whiteboard : MonoBehaviour {
 	private GameObject sizeSlider;
 	private GameObject fontNum;
 
+	public WhiteboardPen whiteboardPen;
+
 	// Use this for initialization
 	void Start () {
 		// Set whiteboard texture
@@ -35,7 +37,6 @@ public class Whiteboard : MonoBehaviour {
 		penSize = (int)Mathf.Round(sizeSlider.transform.position.y * 25 - 5);
 		fontNum.GetComponent<TextMesh>().text = penSize + "";
 
-		
 		//print(posX + ", " + posY);
 
 		// Transform textureCoords into "pixel" values
@@ -67,16 +68,43 @@ public class Whiteboard : MonoBehaviour {
 		this.touchingLast = this.touching;
 	}
 
-	public void ToggleTouch(bool touching) {
+	public void ToggleTouch(bool touching) 
+	{
 		this.touching = touching;
 	}
 
-	public void SetTouchPosition(float x, float y) {
+	public void SetTouchPosition(float x, float y) 
+	{
 		this.posX = x;
 		this.posY = y;
 	}
 
-	public void SetColor(Color color) {
+	public void SetColor(Color color) 
+	{
 		this.color = Enumerable.Repeat<Color>(color, penSize * penSize).ToArray<Color>();
 	}
+
+//button press stuff
+
+	public void ResetBoard()
+	{
+		whiteboardPen.ResetBoard();
+	}
+
+	public void SwitchBoards()
+	{
+		whiteboardPen.SwitchBoard();
+	}
+
+	public void SaveBoard()
+	{
+		SaveTextureAsPNG(this.texture, "Assets/text.png");
+	}
+
+	void SaveTextureAsPNG(Texture2D _texture, string _fullPath)
+    {
+        byte[] _bytes =_texture.EncodeToPNG();
+        System.IO.File.WriteAllBytes(_fullPath, _bytes);
+        Debug.Log(_bytes.Length/1024  + "Kb was saved as: " + _fullPath);
+    }
 }
