@@ -157,11 +157,7 @@ public class WhiteboardPen : MonoBehaviour
 
 	public void ResetBoard()
 	{
-		Texture2D texture = new Texture2D(whiteboard.textureSizeX, whiteboard.textureSizeY);
-		whiteboard.GetComponent<Whiteboard>().SetColor(Color.white);
-		print(whiteboard.GetComponent<Whiteboard>().color.Length);
-		whiteboard.GetComponent<Whiteboard>().texture.SetPixels(0, 0, whiteboard.textureSizeX, whiteboard.textureSizeY, 
-																		whiteboard.GetComponent<Whiteboard>().color);
+		whiteboard.ResetBoard();
 	}
 
 	public void SwitchBoard()
@@ -176,6 +172,7 @@ public class WhiteboardPen : MonoBehaviour
 		whiteboard.enabled = true;
 		whiteboard2.GetComponent<MeshCollider>().enabled = false;
 		whiteboard2.enabled = false;
+		print("switched!");
 	}
 
 	//for checking if the marker hit the ground --- 

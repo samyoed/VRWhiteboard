@@ -9,6 +9,7 @@ public class Whiteboard : MonoBehaviour {
 	public int textureSizeY = 512;
 	public int penSize = 50;
 	public Texture2D texture;
+	public Texture2D currentTexture;
 	public Color[] color;
 
 	private bool touching, touchingLast;
@@ -20,12 +21,17 @@ public class Whiteboard : MonoBehaviour {
 
 	public WhiteboardPen whiteboardPen;
 
+
 	// Use this for initialization
 	void Start () {
 		// Set whiteboard texture
 		Renderer renderer = GetComponent<Renderer>();
+		whiteboardPen = GameObject.Find("WhiteboardPen").GetComponent<WhiteboardPen>();
 		texture = new Texture2D(textureSizeX, textureSizeY);
-		renderer.material.mainTexture = (Texture) texture;
+		currentTexture = Instantiate(texture);
+		renderer.material.mainTexture = (Texture) currentTexture;
+
+		
 
 		sizeSlider = GameObject.Find("Size Slider");
 		fontNum = GameObject.Find("Font Size Number");
@@ -47,19 +53,19 @@ public class Whiteboard : MonoBehaviour {
 		if (touchingLast) 
 		{
 			// Set base touch pixels
-			texture.SetPixels(x, y, penSize, penSize, color);
+			currentTexture.SetPixels(x, y, penSize, penSize, color);
 
 			// Interpolate pixels from previous touch
 			for (float t = 0.01f; t < 1.00f; t += 0.01f) {
 				int lerpX = (int) Mathf.Lerp (lastX, (float) x, t);
 				int lerpY = (int) Mathf.Lerp (lastY, (float) y, t);
-				texture.SetPixels (lerpX, lerpY, penSize, penSize, color);
+				currentTexture.SetPixels (lerpX, lerpY, penSize, penSize, color);
 			}
 		}
 
 		// If currently touching, apply the texture
 		if (touching) {
-			texture.Apply ();
+			currentTexture.Apply ();
 		}
 			
 		this.lastX = (float) x;
@@ -88,7 +94,7 @@ public class Whiteboard : MonoBehaviour {
 
 	public void ResetBoard()
 	{
-		whiteboardPen.ResetBoard();
+		currentTexture = new Texture2D(textureSizeX, textureSizeY);
 	}
 
 	public void SwitchBoards()
