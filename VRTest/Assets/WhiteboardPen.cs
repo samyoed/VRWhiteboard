@@ -158,6 +158,7 @@ public class WhiteboardPen : MonoBehaviour
 	public void ResetBoard()
 	{
 		whiteboard.ResetBoard();
+		print("board reset");
 	}
 
 	public void SwitchBoard()

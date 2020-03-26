@@ -20,12 +20,13 @@ public class Whiteboard : MonoBehaviour {
 	private GameObject fontNum;
 
 	public WhiteboardPen whiteboardPen;
+	public MeshRenderer renderer;
 
 
 	// Use this for initialization
 	void Start () {
 		// Set whiteboard texture
-		Renderer renderer = GetComponent<Renderer>();
+		renderer = GetComponent<MeshRenderer>();
 		whiteboardPen = GameObject.Find("WhiteboardPen").GetComponent<WhiteboardPen>();
 		texture = new Texture2D(textureSizeX, textureSizeY);
 		currentTexture = Instantiate(texture);
@@ -95,6 +96,7 @@ public class Whiteboard : MonoBehaviour {
 	public void ResetBoard()
 	{
 		currentTexture = new Texture2D(textureSizeX, textureSizeY);
+		renderer.material.mainTexture = (Texture) currentTexture;
 	}
 
 	public void SwitchBoards()
