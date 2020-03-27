@@ -87,10 +87,13 @@ public class WhiteboardPen : MonoBehaviour
 		// Check for a Raycast from the tip of the pen
 		if (Physics.Raycast (tip, transform.up, out touch, tipHeight)) 
         {
+			rend.material.color = Color.white;
 			if (touch.collider.tag == "Whiteboard") 
             {
+
     		    whiteboard = touch.collider.GetComponent<Whiteboard>();
                 print("TOUCHING");
+				//feedback to if it is touching
 				rend.material.color = Color.cyan;
 
 			    // Set whiteboard parameters
@@ -153,7 +156,28 @@ public class WhiteboardPen : MonoBehaviour
 				transform.rotation = startRot;
 			}
 		}
+
+
     }
+
+	void LateUpdate()
+	{
+		if(transform.eulerAngles.z > 0 && transform.eulerAngles.z < 180)
+		{
+			float xClamp;
+			float tempZ;
+
+			if(transform.eulerAngles.z > 90)
+				tempZ = 180 - transform.eulerAngles.z;
+			else
+				tempZ = transform.eulerAngles.z;
+
+			xClamp = -Mathf.Cos(tempZ*Mathf.Deg2Rad) * .2f;
+
+			float f = Mathf.Max(xClamp, transform.position.x);
+			transform.position = new Vector3(f, transform.position.y, transform.position.z);
+		}
+	}
 
 	public void ResetBoard()
 	{
@@ -174,6 +198,27 @@ public class WhiteboardPen : MonoBehaviour
 		whiteboard2.GetComponent<MeshCollider>().enabled = false;
 		whiteboard2.enabled = false;
 		print("switched!");
+	}
+
+	public void colorRed()
+	{
+		color = Color.red;
+	}
+	public void colorBlue()
+	{
+		color = Color.blue;
+	}
+	public void colorBlack()
+	{
+		color = Color.black;
+	}
+	public void colorGreen()
+	{
+		color = Color.green;
+	}
+	public void colorWhite()
+	{
+		color = Color.white;
 	}
 
 	//for checking if the marker hit the ground --- 
