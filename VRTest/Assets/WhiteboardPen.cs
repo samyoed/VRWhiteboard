@@ -58,10 +58,10 @@ public class WhiteboardPen : MonoBehaviour
 		// float tipHeight = transform.Find ("Tip").transform.localScale.y;
 		// Vector3 tip = transform.Find ("Tip").transform.position;
         
-        float tipHeight = tipObj.localScale.y / 4;
+        float tipHeight = tipObj.localScale.y / 7;
 
 		//for hover drawing
-		float hoverDist = tipObj.localScale.y / 2;
+		float hoverDist = tipObj.localScale.y / 4;
 		Vector3 tip = tipObj.position;
 
         tipObj.gameObject.GetComponent<MeshRenderer>().material.color = color;
@@ -76,7 +76,7 @@ public class WhiteboardPen : MonoBehaviour
 			if(touch.collider.tag == "Whiteboard")
 			{
 				penMarker.gameObject.SetActive(true);
-				penMarker.position = new Vector3 (penMarker.position.x, transform.position.y, transform.position.z);
+				penMarker.position = new Vector3 (penMarker.position.x, tipObj.position.y, tipObj.position.z);
 			}
 		}
 		else
@@ -84,10 +84,11 @@ public class WhiteboardPen : MonoBehaviour
 			penMarker.gameObject.SetActive(false);
 		}
 
+		rend.material.color = Color.white;
 		// Check for a Raycast from the tip of the pen
 		if (Physics.Raycast (tip, transform.up, out touch, tipHeight)) 
         {
-			rend.material.color = Color.white;
+			
 			if (touch.collider.tag == "Whiteboard") 
             {
 
@@ -139,7 +140,7 @@ public class WhiteboardPen : MonoBehaviour
 		// Lock the rotation of the pen if "touching"
 		if (lastTouch) 
         {
-			transform.rotation = lastAngle;
+			//transform.rotation = lastAngle;
 
 			//trying to snap the marker to the board. Won't work
 			//Vector3 lockedPos = new Vector3(Mathf.Clamp(transform.position.x, 0, 0), transform.position.y, transform.position.z);
@@ -172,7 +173,7 @@ public class WhiteboardPen : MonoBehaviour
 			else
 				tempZ = transform.eulerAngles.z;
 
-			xClamp = -Mathf.Cos(tempZ*Mathf.Deg2Rad) * .2f;
+			xClamp = (-Mathf.Cos(tempZ*Mathf.Deg2Rad) * .13f) - .04f;
 
 			float f = Mathf.Max(xClamp, transform.position.x);
 			transform.position = new Vector3(f, transform.position.y, transform.position.z);

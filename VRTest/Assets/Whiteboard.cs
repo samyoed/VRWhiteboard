@@ -106,7 +106,8 @@ public class Whiteboard : MonoBehaviour {
 
 	public void SaveBoard()
 	{
-		SaveTextureAsPNG(this.texture, "Assets/text.png");
+		string filePath = Application.persistentDataPath + "/SavedBoards/test.png";
+		SaveTextureAsPNG(this.texture, filePath);
 	}
 
 	void SaveTextureAsPNG(Texture2D _texture, string _fullPath)
