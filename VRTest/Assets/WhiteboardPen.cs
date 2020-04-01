@@ -140,7 +140,7 @@ public class WhiteboardPen : MonoBehaviour
 		// Lock the rotation of the pen if "touching"
 		if (lastTouch) 
         {
-			//transform.rotation = lastAngle;
+			transform.rotation = lastAngle;
 
 			//trying to snap the marker to the board. Won't work
 			//Vector3 lockedPos = new Vector3(Mathf.Clamp(transform.position.x, 0, 0), transform.position.y, transform.position.z);
@@ -163,21 +163,21 @@ public class WhiteboardPen : MonoBehaviour
 
 	void LateUpdate()
 	{
-		if(transform.eulerAngles.z > 0 && transform.eulerAngles.z < 180)
-		{
-			float xClamp;
-			float tempZ;
+		// if(transform.eulerAngles.z > 0 && transform.eulerAngles.z < 180)
+		// {
+		// 	float xClamp;
+		// 	float tempZ;
 
-			if(transform.eulerAngles.z > 90)
-				tempZ = 180 - transform.eulerAngles.z;
-			else
-				tempZ = transform.eulerAngles.z;
+		// 	if(transform.eulerAngles.z > 90)
+		// 		tempZ = 180 - transform.eulerAngles.z;
+		// 	else
+		// 		tempZ = transform.eulerAngles.z;
 
-			xClamp = (-Mathf.Cos(tempZ*Mathf.Deg2Rad) * .13f) - .04f;
+		// 	xClamp = (-Mathf.Cos(tempZ*Mathf.Deg2Rad) * .13f) - .04f;
 
-			float f = Mathf.Max(xClamp, transform.position.x);
-			transform.position = new Vector3(f, transform.position.y, transform.position.z);
-		}
+		// 	float f = Mathf.Max(xClamp, transform.position.x);
+		// 	transform.position = new Vector3(f, transform.position.y, transform.position.z);
+		// }
 	}
 
 	public void ResetBoard()
