@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
 
 public class Whiteboard : MonoBehaviour {
 
@@ -21,6 +22,7 @@ public class Whiteboard : MonoBehaviour {
 
 	public WhiteboardPen whiteboardPen;
 	public MeshRenderer renderer;
+	public MeshRenderer render;
 
 
 	// Use this for initialization
@@ -41,7 +43,7 @@ public class Whiteboard : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		penSize = (int)Mathf.Round(sizeSlider.transform.position.y * 25 - 5);
+		//penSize = (int)slider.value;
 		fontNum.GetComponent<TextMesh>().text = penSize + "";
 
 		//print(posX + ", " + posY);
@@ -92,6 +94,10 @@ public class Whiteboard : MonoBehaviour {
 	}
 
 //button press stuff
+	public void penSizeEdit(float size)
+	{
+		penSize = (int)size;
+	}
 
 	public void ResetBoard()
 	{
