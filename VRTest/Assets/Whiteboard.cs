@@ -44,7 +44,7 @@ public class Whiteboard : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//penSize = (int)slider.value;
-		fontNum.GetComponent<TextMesh>().text = penSize + "";
+		//fontNum.GetComponent<TextMesh>().text = penSize + "";
 
 		//print(posX + ", " + posY);
 
