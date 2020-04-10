@@ -27,6 +27,15 @@ public class Menu : MonoBehaviour
     {
 
     }
+
+    public void showDebug()
+    {
+        GameObject.FindObjectOfType<Reporter>().doShow();
+    }
+    public void hideDebug()
+    {
+        GameObject.FindObjectOfType<Reporter>().doShow();
+    }
     public void WhiteboardMenu()
     {
         whiteboardMenu.SetActive(true);

@@ -112,7 +112,7 @@ public class Whiteboard : MonoBehaviour {
 
 	public void SaveBoard()
 	{
-		string filePath = Application.persistentDataPath + "/SavedBoards/test.png";
+		string filePath = Application.persistentDataPath + "/test.png";
 		SaveTextureAsPNG(this.texture, filePath);
 	}
 
