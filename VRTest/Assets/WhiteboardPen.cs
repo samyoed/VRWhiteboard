@@ -24,6 +24,7 @@ public class WhiteboardPen : MonoBehaviour
 
 	private GameObject resetBlock;
 
+
 	//for transporting marker back to original position after a set time
 	private Vector3 startPos;
 	private Quaternion startRot;

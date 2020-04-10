@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+//using UnityEngine.Windows;
+using System.IO;
 
 public class Whiteboard : MonoBehaviour {
 
@@ -112,7 +114,12 @@ public class Whiteboard : MonoBehaviour {
 
 	public void SaveBoard()
 	{
-		string filePath = Application.persistentDataPath + "/test.png";
+		string pathStart = "/mnt/sdcard/pictures/office";
+		if(!Directory.Exists(pathStart))
+			Directory.CreateDirectory(pathStart);
+
+		//string filePath = Application.persistentDataPath + "/test.png";
+		string filePath = pathStart + "/whiteboard" + System.DateTime.Now.ToString("MMMM dd yyyy HHmmss") + ".png";
 		SaveTextureAsPNG(this.texture, filePath);
 	}
 
