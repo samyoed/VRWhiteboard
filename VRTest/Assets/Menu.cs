@@ -11,6 +11,8 @@ public class Menu : MonoBehaviour
     public GameObject mainMenu;
     public RectTransform canvas;
     public Camera mainCamera;
+
+    public float distFromWhiteboard;
     void Start()
     {
         // tempButtonList = GetComponentsInChildren<RectTransform>();
@@ -26,7 +28,12 @@ public class Menu : MonoBehaviour
     }
     void Update()
     {
-
+        if(PersistentWhiteboardInfo.whiteboardActive)
+        {
+            whiteboardMenu.SetActive(false);
+        }
+        else
+            whiteboardMenu.SetActive(true);
     }
 
     public void showDebug()

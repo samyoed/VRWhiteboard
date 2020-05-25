@@ -115,7 +115,7 @@ public class Whiteboard : MonoBehaviour {
 
 	public void SaveBoard()
 	{
-		string pathStart = "/mnt/sdcard/pictures/office";
+		string pathStart = PersistentWhiteboardInfo.pathStart;
 		if(!Directory.Exists(pathStart))
 			Directory.CreateDirectory(pathStart);
 
