@@ -6,14 +6,15 @@ using System.IO;
 public class SnapshotCamera : MonoBehaviour
 {
     private static SnapshotCamera instance;
-    private Camera camera;
+    private Camera newCamera;
     private bool takeSnapshot;
+    public RenderTexture currTexture;
     // Start is called before the first frame update
 
     void Awake()
     {
         instance = this; 
-        camera = gameObject.GetComponent<Camera>();
+        newCamera = gameObject.GetComponent<Camera>();
     }
 
     void OnPostRender()
@@ -21,7 +22,7 @@ public class SnapshotCamera : MonoBehaviour
         if(takeSnapshot) 
         {
             takeSnapshot = false;
-            RenderTexture renderTexture = camera.targetTexture;
+            RenderTexture renderTexture = newCamera.targetTexture;
 
             //make new exture of custom size
             Texture2D renderResult = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.ARGB32, false); 
@@ -35,18 +36,18 @@ public class SnapshotCamera : MonoBehaviour
             if(!Directory.Exists(pathStart))
 			    Directory.CreateDirectory(pathStart);
 
-            string filePath = pathStart + "/snapshot" + System.DateTime.Now.ToString("MMMM dd yyy HHmmss") + ".png"; //filepath
+            string filePath = pathStart + "/snapshot " + System.DateTime.Now.ToString("MMMM dd yyy HHmmss") + ".png"; //filepath
 
             System.IO.File.WriteAllBytes(filePath, _bytes);
             print("Snapshot Saved in: " + filePath);
             RenderTexture.ReleaseTemporary(renderTexture);
-            camera.targetTexture = null;
+            newCamera.targetTexture = currTexture;
         }
     }
 
     void TakeSnapshot(int width, int height)
     {
-        camera.targetTexture = RenderTexture.GetTemporary(width, height, 16);
+        newCamera.targetTexture = RenderTexture.GetTemporary(width, height, 16);
         takeSnapshot = true;
     }
 
