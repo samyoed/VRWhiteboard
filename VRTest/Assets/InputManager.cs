@@ -1,26 +1,73 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.XR;
+
 
 public class InputManager : MonoBehaviour
 {
-    List<UnityEngine.XR.InputDevice> inputDevices; 
+    public XRNode xrNode = XRNode.LeftHand;
+
+    private List<InputDevice> devices = new List<InputDevice>();
+    private InputDevice device;
+
     
-    // Start is called before the first frame update
-    void Start()
+    void GetDevice()
     {
-        inputDevices = new List<UnityEngine.XR.InputDevice>();
-        UnityEngine.XR.InputDevices.GetDevices(inputDevices);
-        foreach(var device in inputDevices)
-        {
-            Debug.Log(string.Format("Device found with name '{0}' and role '{1}'", device.name, device.characteristics.ToString()));
-        }
+        InputDevices.GetDevicesAtXRNode(xrNode, devices);
+        device = devices.FirstOrDefault();
 
     }
 
-    // Update is called once per frame
+    void OnEnable()
+    {
+        if(!device.isValid)
+        {
+            GetDevice();
+        }
+    }
+
     void Update()
     {
+        if(Input.GetKey(KeyCode.UpArrow))
+            SnapshotCamera.TakeSnapshot_Static(1600,900);
+
+
+        if(!device.isValid)
+        {
+            GetDevice();
+        }
+
+        List<InputFeatureUsage> features = new List<InputFeatureUsage>();
+        device.TryGetFeatureUsages(features);
+
+        foreach(var feature in features)
+        {
+            if(feature.type == typeof(bool))
+            {
+                //print($"Feature {feature.name} type {feature.type}");
+            }
+        }
+        bool triggerButtonAction = false;
+        bool primaryButtonAction = false;
+        bool primaryButtonActionPrevFrame = false;
+        bool secondaryButtonAction = false;
+
+        if(device.TryGetFeatureValue(CommonUsages.triggerButton, out triggerButtonAction) && triggerButtonAction)
+            print($"TriggerButton active {triggerButtonAction}");
         
+        //Take snapshot
+        if(device.TryGetFeatureValue(CommonUsages.primaryButton, out primaryButtonAction) && primaryButtonAction && !primaryButtonActionPrevFrame )
+        {
+            primaryButtonActionPrevFrame = true;
+            print($"PrimaryButton active {primaryButtonAction}");
+            SnapshotCamera.TakeSnapshot_Static(1600,900);
+        }
+        else
+            primaryButtonActionPrevFrame = false;
+        
+
+
     }
 }

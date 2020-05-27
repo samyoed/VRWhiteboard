@@ -13,7 +13,7 @@ public class SnapshotCamera : MonoBehaviour
     void Awake()
     {
         instance = this; 
-        camera = Camera.main;
+        camera = gameObject.GetComponent<Camera>();
     }
 
     void OnPostRender()
@@ -35,10 +35,10 @@ public class SnapshotCamera : MonoBehaviour
             if(!Directory.Exists(pathStart))
 			    Directory.CreateDirectory(pathStart);
 
-            string filePath = pathStart + "/snapshots" + System.DateTime.Now.ToString("MMMM dd yyy HHmmss") + ".png"; //filepath
+            string filePath = pathStart + "/snapshot" + System.DateTime.Now.ToString("MMMM dd yyy HHmmss") + ".png"; //filepath
 
             System.IO.File.WriteAllBytes(filePath, _bytes);
-            print("SnapshotSaved!");
+            print("Snapshot Saved in: " + filePath);
             RenderTexture.ReleaseTemporary(renderTexture);
             camera.targetTexture = null;
         }
