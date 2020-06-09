@@ -9,6 +9,7 @@ public class SnapshotCamera : MonoBehaviour
     private Camera newCamera;
     private bool takeSnapshot;
     public RenderTexture currTexture;
+    public GameObject pictureTakenText;
     // Start is called before the first frame update
 
     void Awake()
@@ -40,6 +41,7 @@ public class SnapshotCamera : MonoBehaviour
 
             System.IO.File.WriteAllBytes(filePath, _bytes);
             print("Snapshot Saved in: " + filePath);
+            StartCoroutine(picTakenTextAppear());
             RenderTexture.ReleaseTemporary(renderTexture);
             newCamera.targetTexture = currTexture;
         }
@@ -54,6 +56,12 @@ public class SnapshotCamera : MonoBehaviour
     public static void TakeSnapshot_Static(int width, int height)
     {
         instance.TakeSnapshot(width, height);
+    }
+    public IEnumerator picTakenTextAppear()
+    {
+        pictureTakenText.SetActive(true);
+        yield return new WaitForSeconds(1);
+        pictureTakenText.SetActive(false);
     }
 
 }

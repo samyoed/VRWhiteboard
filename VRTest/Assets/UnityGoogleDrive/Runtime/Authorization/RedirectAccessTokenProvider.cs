@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
+
 namespace UnityGoogleDrive
 {
     /// <summary>
@@ -42,6 +43,7 @@ namespace UnityGoogleDrive
                     settings.GenericClientCredentials.ClientId);
 
                 Application.OpenURL(authRequest);
+                //InAppBrowser.OpenURL(authRequest);
             }
             else // Access token is already injected to the URL; using it.
             {
