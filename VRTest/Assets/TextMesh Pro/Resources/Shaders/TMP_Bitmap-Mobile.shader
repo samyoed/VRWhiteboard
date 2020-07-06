@@ -51,7 +51,7 @@ SubShader {
 
 		#pragma multi_compile __ UNITY_UI_CLIP_RECT
 		#pragma multi_compile __ UNITY_UI_ALPHACLIP
-
+        #pragma target 2.0
 
 		#include "UnityCG.cginc"
 

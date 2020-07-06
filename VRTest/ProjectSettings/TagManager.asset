@@ -10,6 +10,7 @@ TagManager:
   - Ground
   - Save
   - Switch
+  - VRGazeInteractable
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - PenHandleIgnore
   - 
   - 
   - 

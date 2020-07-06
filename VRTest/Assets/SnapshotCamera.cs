@@ -10,12 +10,19 @@ public class SnapshotCamera : MonoBehaviour
     private bool takeSnapshot;
     public RenderTexture currTexture;
     public GameObject pictureTakenText;
+    public bool isSpinning = true;
     // Start is called before the first frame update
 
     void Awake()
     {
         instance = this; 
         newCamera = gameObject.GetComponent<Camera>();
+    }
+
+    void Update()
+    {
+        if(isSpinning)
+            transform.parent.transform.Rotate(0,1,0);
     }
 
     void OnPostRender()
@@ -45,6 +52,14 @@ public class SnapshotCamera : MonoBehaviour
             RenderTexture.ReleaseTemporary(renderTexture);
             newCamera.targetTexture = currTexture;
         }
+        
+
+    }
+
+
+    public void StopSpin()
+    {
+        isSpinning = false;
     }
 
     void TakeSnapshot(int width, int height)

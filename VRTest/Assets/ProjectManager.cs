@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityGoogleDrive;
+//using UnityGoogleDrive;
 
 public class ProjectManager : MonoBehaviour
 {
@@ -11,7 +11,7 @@ public class ProjectManager : MonoBehaviour
     public void SaveTextureGoogleDrive()
 	{
 
-        InAppBrowser.OpenURL("http://www.google.com");
+        //InAppBrowser.OpenURL("http://www.google.com");
         // Texture2D _texture = whiteboard.texture;
 		// byte[] _bytes =_texture.EncodeToPNG();
 		// var file = new UnityGoogleDrive.Data.File() {Name = "Image.png", Content = _bytes};

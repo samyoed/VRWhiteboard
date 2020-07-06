@@ -21,8 +21,11 @@ public class WhiteboardPen : MonoBehaviour
 	private bool lastTouch;
 
     private Transform tipObj;
+	private Transform penBase;
 
-	private GameObject resetBlock;
+	public Transform rightHand;
+	public BoxCollider penHandle; // need to ignore during raycast
+	public LayerMask ignore;
 
 
 	//for transporting marker back to original position after a set time
@@ -54,16 +57,14 @@ public class WhiteboardPen : MonoBehaviour
 	void Update () 
     {
         tipObj = transform.GetChild(0);
+		penBase = transform.GetChild(1);
 		penMarker = whiteboard.transform.GetChild(0);
-
-		// float tipHeight = transform.Find ("Tip").transform.localScale.y;
-		// Vector3 tip = transform.Find ("Tip").transform.position;
         
-        float tipHeight = tipObj.localScale.y / 7;
+        float tipHeight = .22f ;
 
 		//for hover drawing
 		float hoverDist = tipObj.localScale.y / 4;
-		Vector3 tip = tipObj.position;
+		Vector3 tip = penBase.transform.position;
 
         tipObj.gameObject.GetComponent<MeshRenderer>().material.color = color;
 
@@ -72,6 +73,7 @@ public class WhiteboardPen : MonoBehaviour
 			tipHeight *= 1.1f;
 		}
 
+		
 		if(Physics.Raycast (tip, transform.up, out touch, hoverDist))
 		{
 			if(touch.collider.tag == "Whiteboard")
@@ -86,10 +88,12 @@ public class WhiteboardPen : MonoBehaviour
 		}
 
 		rend.material.color = Color.white;
+
+
+		Debug.DrawRay(tip, transform.up, Color.green);
 		// Check for a Raycast from the tip of the pen
-		if (Physics.Raycast (tip, transform.up, out touch, tipHeight)) 
+		if (Physics.Raycast (tip, transform.up, out touch, tipHeight, ~ignore)) 
         {
-			
 			if (touch.collider.tag == "Whiteboard") 
             {
 
@@ -132,7 +136,6 @@ public class WhiteboardPen : MonoBehaviour
 		} 
         else 
         {
-
 			//rend.material.color = Color.white;
 			whiteboard.ToggleTouch (false);
 			lastTouch = false;
@@ -141,7 +144,7 @@ public class WhiteboardPen : MonoBehaviour
 		// Lock the rotation of the pen if "touching"
 		if (lastTouch) 
         {
-			transform.rotation = lastAngle;
+			//transform.rotation = lastAngle;
 
 			//trying to snap the marker to the board. Won't work
 			//Vector3 lockedPos = new Vector3(Mathf.Clamp(transform.position.x, 0, 0), transform.position.y, transform.position.z);
@@ -159,11 +162,12 @@ public class WhiteboardPen : MonoBehaviour
 			}
 		}
 
-
+		
     }
 
 	void LateUpdate()
 	{
+		//transform.rotation = rightHand.rotation;
 		// if(transform.eulerAngles.z > 0 && transform.eulerAngles.z < 180)
 		// {
 		// 	float xClamp;

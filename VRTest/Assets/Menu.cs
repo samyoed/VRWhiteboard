@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using TMPro;
 //using static NativeGallery;
 
 public class Menu : MonoBehaviour
@@ -8,69 +10,209 @@ public class Menu : MonoBehaviour
     RectTransform[] tempButtonList;
     public List<GameObject> buttonList;
     public GameObject whiteboardMenu;
+    public GameObject whiteboardButton;
+    public GameObject toolBar;
+    public GameObject settingsMenu;
+    public GameObject openMenuButton;
+    public GameObject closeMenuButton;
     public GameObject mainMenu;
+    public GameObject snapshotCameraPrefab;
+    public GameObject snapshotCamera;
+    public GameObject uiBG;
+    public GameObject stickyMenu;
+    public GameObject stickyMenuButton;
     public RectTransform canvas;
+    public TextMeshProUGUI clockTime;
+    public TextMeshProUGUI clockDate;
     public Camera mainCamera;
 
+    public Vector3 startPos;
+    public Quaternion startRot;
+    public Vector3 prevFramePos;
+    public Quaternion prevFrameRot;
+    //position lock for desktop mode
+    public bool positionLocked;
+    public bool whiteboardButtonActive;
+    public bool whiteboardActive;
+    public bool toolbarActive;
+    public bool settingsActive;
+    public bool openMenuActive;
+    public bool closeMenuActive;
+    public bool uiBGActive;
+    public bool timeActive;
+    public bool stickyActive;
+    public bool stickyButtonActive;
+    
+
     public float distFromWhiteboard;
+
     void Start()
     {
-        // tempButtonList = GetComponentsInChildren<RectTransform>();
-        // foreach(RectTransform trans in tempButtonList)
-        //     buttonList.Add(trans);
-        // buttonList.Remove(canvas);
-        // foreach(RectTransform trans in buttonHideList)
-        //     buttonList.Remove(trans);
-        
-        // foreach(RectTransform trans in buttonList)
-        //     trans.gameObject.SetActive(false);
-        
+        startRot = transform.localRotation;
+        startPos = transform.localPosition;
     }
+
     void Update()
     {
-        if(PersistentWhiteboardInfo.whiteboardActive)
-        {
+        clockTime.text = System.DateTime.Now.ToString("hh:mm:ss tt"); 
+        clockDate.text = System.DateTime.Now.ToString("MM/dd/yyyy");
+
+        if(whiteboardActive)
+            whiteboardMenu.SetActive(true);
+        else
             whiteboardMenu.SetActive(false);
+        if(toolbarActive)
+            toolBar.SetActive(true);
+        else
+            toolBar.SetActive(false);
+        if(settingsActive)
+            settingsMenu.SetActive(true);
+        else
+            settingsMenu.SetActive(false);
+        if(openMenuActive)
+            openMenuButton.SetActive(true);
+        else
+            openMenuButton.SetActive(false);      
+        if(whiteboardButtonActive)
+            whiteboardButton.SetActive(true);
+        else
+            whiteboardButton.SetActive(false);      
+        if(closeMenuActive)
+            closeMenuButton.SetActive(true);
+        else 
+            closeMenuButton.SetActive(false);
+        if(uiBGActive)
+            uiBG.SetActive(true);
+        else
+            uiBG.SetActive(false);
+        if(timeActive)
+        {
+            clockTime.gameObject.SetActive(true);
+            clockDate.gameObject.SetActive(true);
         }
         else
-            whiteboardMenu.SetActive(true);
+        {
+            clockTime.gameObject.SetActive(false);
+            clockDate.gameObject.SetActive(false);
+        }
+        if(stickyActive)
+            stickyMenu.SetActive(true);
+        else
+            stickyMenu.SetActive(false);
+
+
+        if((Application.platform == RuntimePlatform.WindowsPlayer ||
+           Application.platform == RuntimePlatform.WindowsEditor) &&
+           Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(!positionLocked)
+            {
+                positionLocked = true;
+                OpenMenu();
+            }
+            else
+            {
+                transform.localRotation = startRot;
+                transform.localPosition = startPos;
+                positionLocked = false;
+                CloseMenu();
+            }
+        }
+    }
+    void LateUpdate()
+    {
+        if(positionLocked)
+        {
+            transform.position = prevFramePos;
+            transform.rotation = prevFrameRot;
+        }
+        else
+        {
+            prevFramePos = transform.position;
+            prevFrameRot = transform.rotation;
+        }
     }
 
-    public void showDebug()
+    public void WhiteboardMenu()    // show whiteboard menu
     {
-        GameObject.FindObjectOfType<Reporter>().doShow();
-    }
-    public void hideDebug()
-    {
-        GameObject.FindObjectOfType<Reporter>().doShow();
-    }
-    public void WhiteboardMenu()
-    {
-        whiteboardMenu.SetActive(true);
-        foreach (GameObject button in buttonList)
-            if(button != whiteboardMenu)
-                button.SetActive(false);
-        // foreach(RectTransform trans in buttonHideList)
-        //     trans.gameObject.SetActive(false);
-        // foreach(RectTransform trans in buttonList)
-        //     trans.gameObject.SetActive(true);
-    }
-    public void hideMenu()
-    {
-        mainMenu.SetActive(true);
-        foreach (GameObject button in buttonList)
-            if(button != mainMenu)
-                button.SetActive(false);
-    }
-    public void GetImage()
-    {
-        string path;
-        string title = "";
-        string mime = "image/*";
-        //NativeGallery.GetImagesFromGallery(path, title = "", mime = "image/*");
-        PickImage(1024);
+        whiteboardActive = true;
+        whiteboardButtonActive = false;
 
     }
+    public void hideWhiteboardMenu() // hide whiteboard menu
+    {
+        whiteboardActive = false;
+        whiteboardButtonActive = true;
+    }
+    public void showToolbar() // switch to the tool toolbar
+    {
+        toolbarActive = true;
+        settingsActive = false;
+    }
+    public void hideAllBars()
+    {
+        toolbarActive = false;
+        settingsActive = false;
+    }
+    public void showSettings() // switch to settings toolbar
+    {
+        settingsActive = true;
+        toolbarActive = false;
+    }
+    public void ShowWhiteboardButton()
+    {
+        whiteboardButtonActive = true;
+    }
+    public void HideWhiteboardbutton()
+    {
+        whiteboardButtonActive = false;
+    }
+    public void ShowSticky()
+    {
+        if(!stickyActive)
+        {
+            stickyActive = true;
+            whiteboardActive = false;
+            whiteboardButtonActive = false;
+        }
+        else
+        {
+            stickyActive = false;
+            whiteboardButtonActive = true;
+        }
+    }
+    public void OpenMenu()
+    {
+        showToolbar();
+        ShowWhiteboardButton();
+        openMenuActive = false;
+        closeMenuActive = true;
+        uiBGActive = true;
+        timeActive = true;
+    }
+    public void CloseMenu()
+    {
+        hideAllBars();
+        hideWhiteboardMenu();
+        whiteboardButtonActive = false;
+        openMenuActive = true;
+        closeMenuActive = false;
+        uiBGActive = false;
+        timeActive = false;
+    }
+    public void SpawnCamera() //spawn camera or move to menu position if it already exists
+    {
+        if(snapshotCamera == null)
+            snapshotCamera = Instantiate(snapshotCameraPrefab, transform.position, Quaternion.Euler(Vector3.zero));
+        else
+        {
+            snapshotCamera.transform.position = transform.position;
+            snapshotCamera.GetComponent<Rigidbody>().useGravity = false;
+        }
+        snapshotCamera.transform.GetChild(0).GetComponent<SnapshotCamera>().isSpinning = true;
+    }
+
+
     private void PickImage( int maxSize )
 {
 	NativeGallery.Permission permission = NativeGallery.GetImageFromGallery( ( path ) =>

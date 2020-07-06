@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine.UI;
 //using UnityEngine.Windows;
 using System.IO;
-using UnityGoogleDrive;
+//using UnityGoogleDrive;
 
 public class Whiteboard : MonoBehaviour {
 
