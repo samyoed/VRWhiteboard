@@ -11,15 +11,15 @@ public class RigExt : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {   
-        whiteboard = GameObject.FindWithTag("Whiteboard").GetComponent<Whiteboard>();
+//        whiteboard = GameObject.FindWithTag("Whiteboard").GetComponent<Whiteboard>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        whiteboardDist = Vector3.Distance(transform.position, whiteboard.transform.position);
+        // whiteboardDist = Vector3.Distance(transform.position, whiteboard.transform.position);
 
-        if(whiteboardDist < menuActiveDistance )
-            PersistentWhiteboardInfo.whiteboardActive = true;
+        // if(whiteboardDist < menuActiveDistance )
+        //     PersistentWhiteboardInfo.whiteboardActive = true;
     }
 }

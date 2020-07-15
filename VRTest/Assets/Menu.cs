@@ -199,6 +199,8 @@ public class Menu : MonoBehaviour
         closeMenuActive = false;
         uiBGActive = false;
         timeActive = false;
+        stickyActive = false;
+
     }
     public void SpawnCamera() //spawn camera or move to menu position if it already exists
     {
