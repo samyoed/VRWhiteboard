@@ -3,18 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PhotonPlayer : MonoBehaviour
+public class NotLocalDisable : MonoBehaviour
 {
     private PhotonView PV;
-    public GameObject myAvatar;
+    public GameObject leftHand;
+    public GameObject rightHand;
+    public GameObject cam;
     // Start is called before the first frame update
     void Start()
     {
+        
         PV = GetComponent<PhotonView>();
-        if(PV.IsMine)
-            myAvatar = PhotonNetwork.Instantiate("PhotonPrefabs/XRRig", 
-                                      GameSetup.GS.spawnPoints[0].position,
-                                      GameSetup.GS.spawnPoints[0].rotation, 0); 
+            if(!PV.IsMine)
+            {
+                leftHand.SetActive(false);
+                rightHand.SetActive(false);
+                cam.SetActive(false);
+            }
     }
 
     // Update is called once per frame

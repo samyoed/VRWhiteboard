@@ -9,18 +9,7 @@ public class GameSetup : MonoBehaviour
 
     private void OnEnable()
     {
-        if(GameSetup.GS ==null)
+        if(GameSetup.GS == null)
             GameSetup.GS = this;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
