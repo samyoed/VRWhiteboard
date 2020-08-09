@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class NotLocalDisable : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class NotLocalDisable : MonoBehaviour
     public GameObject leftHand;
     public GameObject rightHand;
     public GameObject cam;
+    public GameObject ground;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +22,9 @@ public class NotLocalDisable : MonoBehaviour
                 rightHand.SetActive(false);
                 cam.SetActive(false);
             }
+
+        ground = GameObject.Find("Ground");
+        //ground.GetComponent<TeleportationArea>().TeleportationProvider = GetComponent<;
     }
 
     // Update is called once per frame
