@@ -202,6 +202,12 @@ public class Menu : MonoBehaviour
         stickyActive = false;
 
     }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
     public void SpawnCamera() //spawn camera or move to menu position if it already exists
     {
         if(snapshotCamera == null)

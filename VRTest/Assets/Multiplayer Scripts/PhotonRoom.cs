@@ -67,6 +67,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private void CreatePlayer()
     {
         PhotonNetwork.Instantiate("PhotonPrefabs/PhotonNetworkPlayer", transform.position, Quaternion.identity, 0);
+        print("Character has spawned");
     }
     
 }

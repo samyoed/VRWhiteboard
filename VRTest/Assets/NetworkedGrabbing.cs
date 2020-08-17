@@ -12,17 +12,6 @@ public class NetworkedGrabbing : MonoBehaviourPunCallbacks, IPunOwnershipCallbac
     {
         photonView = GetComponent<PhotonView>();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void OnSelectEnter()
     {
         TransferOwnership();
@@ -33,7 +22,7 @@ public class NetworkedGrabbing : MonoBehaviourPunCallbacks, IPunOwnershipCallbac
     }
     void TransferOwnership()
     {
-        TransferOwnership();
+        photonView.RequestOwnership();
     }
 
     public void OnOwnershipRequest(PhotonView targetView, Player requestingPlayer)
