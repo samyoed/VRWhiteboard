@@ -1,6 +1,6 @@
 ## VRWhiteboard
 
-#Whiteboard:
+# Whiteboard:
 
     For the whiteboard, we've been implementing the "Paint in 3D" package available in the asset store.
     The made-from-scratch whiteboard prefab is in Assets/Prefabs, however it is significantly less performant
@@ -19,7 +19,7 @@
     the contents of 'Board 1'. Clicking the 'Clear Board' button will clear the current board, leaving the current
     board like how it started.
 
-#Snapshot Camera & Input Manager:
+# Snapshot Camera & Input Manager:
 
     For taking pictures in the application. Instructions are attached to the camera as you pick it up. Pictures 
     are saved into memory. Location is in SnapshotCamera.cs
@@ -29,7 +29,7 @@
     All the non-standard inputs are done in InputManager.cs, documentation about non-standard inputs can be found
     here: https://docs.unity3d.com/2020.2/Documentation/Manual/xr_input.html
 
-#Current Networking Implementation and Status:
+# Current Networking Implementation and Status:
 
     There is very basic multiplayer enabled at the moment where multiple people are able to log into the experience
     at the same time. Once in the experience, players should be able to see avatars that represent the other players.
@@ -41,7 +41,7 @@
     reliable. There is also the fact that once someone joins the room after the board is drawn on, the previous drawings
     will not be synced.
 
-#Wrist Menu:
+# Wrist Menu:
 
     The menu is a canvas stored on the left hand. Implemented in Menu.cs
 
@@ -51,7 +51,7 @@
     Menu.cs
 
 
-#Google Drive Integration/Web Browser Integration Status:
+# Google Drive Integration/Web Browser Integration Status:
 
     The API used is here for the Google Drive Integration: https://github.com/Elringus/UnityGoogleDrive
 
